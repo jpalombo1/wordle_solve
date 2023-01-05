@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from wordle_solve.constants import WORD_SIZE, LetterState, check_word
 from wordle_solve.player import Player
 
-VALID_STATE_INPUT = [1, 2, 3]
+VALID_STATE_INPUT: list[int] = [1, 2, 3]
 
 
 @dataclass
