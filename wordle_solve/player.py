@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 from scipy.stats import entropy  # type:ignore
 
-from wordle_solve.constants import ALPH, VALID_LIST, WORD_SIZE, LetterState
+from wordle_solve.constants import ALPH, ANSWER_LIST, WORD_SIZE, LetterState
 
 
 @dataclass
@@ -36,7 +36,7 @@ class Player(ABC):
         ----------
         corpus (list[str]) : List of all words left to use, initially all valid words.
         """
-        self.corpus: list[str] = [word for word in VALID_LIST]
+        self.corpus: list[str] = [word for word in ANSWER_LIST]
 
     @abstractmethod
     def guess_word(self, turn: int) -> str:
@@ -151,18 +151,17 @@ class Player(ABC):
             ]
 
         diff_entropies: list[float] = []
-        use_words = self.corpus if last_word else VALID_LIST
+        use_words = self.corpus if last_word else ANSWER_LIST
         for word in use_words:
             diff_entropy = 0.0
             for idx, char in enumerate(word):
                 num_greens = has_char_in_pos[char][idx]
                 num_yellows = sum(has_char_in_pos[char]) - num_greens
-                num_greys = len(self.corpus) - num_greens - num_yellows
+                num_greys = len(self.corpus) * WORD_SIZE - num_greens - num_yellows
                 dist = np.array([num_greens, num_yellows, num_greys]).astype(float)
                 dist /= np.sum(dist)
                 diff_entropy += float(entropy(dist))
             diff_entropies.append(diff_entropy)
-
         best_entropy_idx = np.array(diff_entropies).argmax()
         best_word = use_words[best_entropy_idx]
 

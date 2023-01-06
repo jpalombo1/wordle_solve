@@ -8,12 +8,11 @@ NUM_ITERS: int = 1
 
 def main():
     """Main execution of agents and game."""
-    set_word = "layer"
-    comp_use_random = False
-    turn_dist = {}
+    set_word = None
     board = Board(actual_word=set_word)
     p1 = Human()
-    c1 = Computer(use_random=comp_use_random)
+    turn_dist = {}
+    c1 = Computer(use_random=False)
     for _ in range(NUM_ITERS):
         num_turns = board.play(c1)
         if num_turns not in turn_dist:
@@ -21,6 +20,7 @@ def main():
         turn_dist[num_turns] += 1
         print(turn_dist)
     board.play(p1)
+    # board.play_outside(p1)
 
 
 if __name__ == "__main__":
