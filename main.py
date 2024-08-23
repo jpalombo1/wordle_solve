@@ -19,8 +19,8 @@ def main():
             turn_dist[num_turns] = 0
         turn_dist[num_turns] += 1
         print(turn_dist)
-    board.play(p1)
-    # board.play_outside(p1)
+    # board.play(p1)
+    board.play_outside(p1)
 
 
 if __name__ == "__main__":
